@@ -1,65 +1,24 @@
 import './globals.css'
-import {useState} from "react";
+import {UserContext} from "./utils/contexts/UserContext.jsx";
+import PostContainer from "./Components/PostContainer.jsx";
 export default function App(){
-    const [blogPostData,setBlogPostData]=useState({
-        title: "",
-        body: "",
-
-    });
+//All the components in the userContext Provider ( even the child of those components)
+// can access the value of the userContext
     return(
-    <div>
-        <form
-              onSubmit={(e)=>{
-                  e.preventDefault();
-                  if(blogPostData.title && blogPostData.body){
-                      fetch("https://jsonplaceholder.typicode.com/posts", {
-                          method:"POST",
-                          body:JSON.stringify({
-                              userId:1,
-                              title:blogPostData.title,
-                              body:blogPostData.body,
-                          }),
-                          headers:{
-                              'Content-type': 'application/json; charset=UTF-8',
+        <div>
+            <UserContext.Provider value={{
+                id:1,
+                username: "M_M",
+                email: "melkimariem150@gmail.com",
+                displayName: "Melki Mariem"}}>
+                <div>
+                    <PostContainer/>
 
-                          }
-                          }
-                          ).then((response) => response.json())
-                          .then((json) => console.log(json))
-                          .then(()=>console.log("success"))
-                  }
+                </div>
 
-              }}
-
-        >
-
-            <label htmlFor={"title"}>Title</label>
-            <input name="title" id="title" type="text" value={blogPostData.title}
-                   onChange={
-                       (e)=>{
-                           setBlogPostData((currentBlogPostData)=>({
-                               ...currentBlogPostData,
-                               title: e.target.value,}))
-                       }
-                   }
-            /><br/>
-            <label htmlFor={"body"} >Body</label>
-            <input type="text" name="body" id="body" value={blogPostData.body}
-                   onChange={
-                       (e)=>{
-                           setBlogPostData(
-                               (currentBlogPostData)=> ({
-                               ...currentBlogPostData,
-                              body: e.target.value}));
-                       }
-
-                   }
-            /><br/>
-            <button>Post</button>
-        </form>
-
-
-    </div>);
+            </UserContext.Provider>
+        </div>
+   );
 
 }
 
