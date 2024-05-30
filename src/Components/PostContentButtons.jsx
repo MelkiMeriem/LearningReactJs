@@ -2,9 +2,14 @@ import {useContext} from "react";
 import {UserContext} from "../utils/contexts/UserContext.jsx";
 
 function PostContentButtons(){
-    const userContextData=useContext(UserContext);
+    const {id,setUserData}=useContext(UserContext);
     return <div>
-        {userContextData.id}
+        {id} <br/>
+        <button
+            onClick={()=>{setUserData(
+                ((currentState)=>({...currentState,displayName:"Zaineb Melki"}))
+            )}}
+        >Click me</button>
     </div>
 }
 export default PostContentButtons;
