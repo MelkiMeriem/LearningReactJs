@@ -1,31 +1,65 @@
-import {UserProfile} from './Components/UserProfile.jsx';
 import './globals.css'
-import {useEffect, useState} from "react";
-import {LoginForm} from "./Components/LoginForm.jsx";
-import {RegisterForm} from "./Components/RegisterForm.jsx";
+import {useState} from "react";
 export default function App(){
-    const [counter,setCounter]=useState(0);
-    useEffect(() => {
-        console.log("rendering...")
-        document.title="React Tutorial"
-    }, [counter]); //cette callback function will be invoked if the state of counter
-    //changed , [] is the array of dependencies in which the function setEffect will be invoked , you can let it empty .
-    //fetch will return a promise object , so it has the functions then(success) , catch , finally
-    useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users', {
-            method:'GET',
-            }
-        ).then((response)=>{return response.json()}).then((data)=>{console.log(data)})
-    }, []);
-return(
-    <div>
-        <div>
-            You clicked the button {counter} times
-        </div>
-       <button
-       onClick={()=>setCounter((currentCounterState)=>currentCounterState+1)}
-       >Click Me</button>
-    </div>
+    const [blogPostData,setBlogPostData]=useState({
+        title: "",
+        body: "",
 
-)
+    });
+    return(
+    <div>
+        <form
+              onSubmit={(e)=>{
+                  e.preventDefault();
+                  if(blogPostData.title && blogPostData.body){
+                      fetch("https://jsonplaceholder.typicode.com/posts", {
+                          method:"POST",
+                          body:JSON.stringify({
+                              userId:1,
+                              title:blogPostData.title,
+                              body:blogPostData.body,
+                          }),
+                          headers:{
+                              'Content-type': 'application/json; charset=UTF-8',
+
+                          }
+                          }
+                          ).then((response) => response.json())
+                          .then((json) => console.log(json))
+                          .then(()=>console.log("success"))
+                  }
+
+              }}
+
+        >
+
+            <label htmlFor={"title"}>Title</label>
+            <input name="title" id="title" type="text" value={blogPostData.title}
+                   onChange={
+                       (e)=>{
+                           setBlogPostData((currentBlogPostData)=>({
+                               ...currentBlogPostData,
+                               title: e.target.value,}))
+                       }
+                   }
+            /><br/>
+            <label htmlFor={"body"} >Body</label>
+            <input type="text" name="body" id="body" value={blogPostData.body}
+                   onChange={
+                       (e)=>{
+                           setBlogPostData(
+                               (currentBlogPostData)=> ({
+                               ...currentBlogPostData,
+                              body: e.target.value}));
+                       }
+
+                   }
+            /><br/>
+            <button>Post</button>
+        </form>
+
+
+    </div>);
+
 }
+
