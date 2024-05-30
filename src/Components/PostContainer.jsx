@@ -7,7 +7,7 @@ function PostContainer(){
         <div>
             <PostContent />
             <div>
-                {userContextData.displayName}
+                {userContextData.name}
             </div>
         </div>
 

@@ -7,7 +7,7 @@ function PostContentButtons(){
         {id} <br/>
         <button
             onClick={()=>{setUserData(
-                ((currentState)=>({...currentState,displayName:"Zaineb Melki"}))
+                ((currentState)=>({...currentState,name:"Zaineb Melki"}))
             )}}
         >Click me</button>
     </div>
